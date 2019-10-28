@@ -72,12 +72,15 @@ namespace Aljurythm
 
                     for (var i = 0; i < level.Statistics.TotalCases; i++)
                     {
-                        Console.Write($"Case {(i + 1).ToString().PadLeft(paddingLength, '0')}: ");
+                        var caseNumber = (i + 1).ToString().PadLeft(paddingLength, '0');
+                        if (level.DisplayLog || level.DisplayInputs) Console.Write($"Case {caseNumber}: ");
+
                         var testCase = evaluateTestCase(level, streamReader);
                         level.Statistics.UpdateTime(testCase);
 
                         if (testCase.Time > level.TimeLimit)
                         {
+                            if (!level.DisplayLog) Console.Write($"Case {caseNumber}: ");
                             Print("TIME LIMIT EXCEEDED\n", ConsoleColor.Blue);
                             if (level.DisplayInputs) Console.WriteLine(testCase.Inputs);
                             return;
@@ -86,14 +89,16 @@ namespace Aljurythm
                         if (!testCase.Actual.Equals(testCase.Expected))
                         {
                             level.Statistics.FailedCases++;
+                            if (!level.DisplayLog) Console.Write($"Case {caseNumber}: ");
                             Print($"FAILED [Actual = {testCase.Actual} :: Expected = {testCase.Expected}]\n",
-                                ConsoleColor.Red);
+                            ConsoleColor.Red);
                         }
-                        else
+                        else if (level.DisplayLog)
                         {
                             Print($"COMPLETED [{testCase.Time} ms]\n", ConsoleColor.Green);
                         }
 
+                        if (!level.DisplayLog && level.DisplayInputs) Console.WriteLine();
                         if (level.DisplayInputs) Console.WriteLine(testCase.Inputs);
 
                     }

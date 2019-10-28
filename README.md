@@ -23,6 +23,7 @@ _No more boilerplate code or ugly outputs._
 1. Less boilerplate code to test your algorithm.
 1. Statistics after finishing each level.
 1. Set different time limits for each level.
-1. Display inputs of each test cases _[optional per level]_.
+1. Display inputs of each test case _[optional per level]_.
+1. Display Log _[optional per level]_.
 
-![screenshot](screenshot.jpg)
+![screenshot](screenshot.png)

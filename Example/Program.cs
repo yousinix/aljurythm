@@ -17,14 +17,16 @@ namespace Example
                     {
                         Name = "Sample Cases",
                         Path = @"Tests/sample.txt",
-                        TimeLimit = 12,
+                        TimeLimit = 20,
                         MultiplierFactor = 1E6,
                         DisplayInputs = true
                     },
                     new Level
                     {
+                        Name = "Complete Cases",
                         Path = @"Tests/complete.txt",
-                        TimeLimit = 8
+                        TimeLimit = 8,
+                        DisplayLog = false
                     }
                 }
             };
