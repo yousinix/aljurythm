@@ -17,8 +17,9 @@ namespace Example
                     {
                         Name = "Sample Cases",
                         Path = @"Tests/sample.txt",
-                        TimeLimit = 50,
-                        MultiplierFactor = 1E6
+                        TimeLimit = 12,
+                        MultiplierFactor = 1E6,
+                        DisplayInputs = true
                     },
                     new Level
                     {
@@ -39,7 +40,13 @@ namespace Example
                 var operands = streamReader.ReadLine().Split(' ');
                 var operand1 = int.Parse(operands[0]);
                 var operand2 = int.Parse(operands[1]);
-                testCase.Expected = int.Parse(streamReader.ReadLine()); // Assign TestCase's expected value
+
+                // Assign TestCase's expected value
+                testCase.Expected = int.Parse(streamReader.ReadLine()); 
+
+                // Used in Displaying inputs if level.DisplayInputs == true [optional]
+                testCase.Inputs.AddInput(() => operand1);
+                testCase.Inputs.AddInput(() => operand2);
 
                 // Test the required Algorithms using the inputs as follow:
                 // P.S: You can multiply the runtime to make sure the order is as required.

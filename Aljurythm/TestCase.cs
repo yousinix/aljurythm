@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Aljurythm
 {
@@ -9,6 +11,7 @@ namespace Aljurythm
         public TResult Expected { get; set; }
         public TResult Actual { get; set; }
         public long Time { get; set; }
+        public InputsList Inputs { get; set; } = new InputsList();
 
         public void Test(Func<TResult> algorithm, double multiplierFactor = 1)
         {
@@ -20,6 +23,5 @@ namespace Aljurythm
             _stopwatch.Stop();
             Time = _stopwatch.ElapsedMilliseconds;
         }
-
     }
 }
