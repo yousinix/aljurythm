@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Aljurythm;
 
 namespace Example
@@ -11,6 +10,7 @@ namespace Example
 
             var jury = new Jury
             {
+                Name = "Sum Algorithm",
                 Levels = new List<Level>
                 {
                     new Level
@@ -22,13 +22,13 @@ namespace Example
                     },
                     new Level
                     {
-                        Name = "Complete Cases",
                         Path = @"Tests/complete.txt",
                         TimeLimit = 8
                     }
                 }
             };
 
+            jury.DisplayMenu();
             jury.Evaluate((level, streamReader) =>
             {
                 // Create an instance from TestCase using the type of the result.

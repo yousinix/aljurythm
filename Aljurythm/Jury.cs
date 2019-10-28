@@ -6,12 +6,61 @@ namespace Aljurythm
 {
     public class Jury
     {
-        public List<Level> Levels { get; set; }
+        private int _startingLevel;
+        private string _name;
+        private List<Level> _levels;
+
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                _name = value;
+                if (!string.IsNullOrEmpty(_name))
+                    Console.Title = Name;
+            }
+        }
+
+        public List<Level> Levels
+        {
+            get => _levels;
+            set
+            {
+                _levels = value;
+                for (var i = 0; i < _levels.Count; i++)
+                {
+                    var level = _levels[i];
+                    if (string.IsNullOrEmpty(level.Name))
+                        level.Name = $"Level {i + 1}";
+                }
+            }
+        }
+
+        public void DisplayMenu()
+        {
+            if (!string.IsNullOrEmpty(_name))
+            {
+                Print($"{Name}:\n", ConsoleColor.Magenta);
+                Console.WriteLine(new string('─', Name.Length + 1));
+            }
+
+            for (var i = 0; i < Levels.Count; i++)
+            {
+                Console.WriteLine($"[{i + 1}] {Levels[i].Name}");
+            }
+            Console.WriteLine();
+
+            Console.Write($"Enter your choice [1~{Levels.Count}]: ");
+            var choice = Console.ReadKey().KeyChar.ToString();
+            var isNumeric = int.TryParse(choice, out var n);
+            _startingLevel = isNumeric ? n - 1 : Levels.Count;
+            Console.Clear();
+        }
 
         public void Evaluate<T>(Func<Level, StreamReader, TestCase<T>> evaluateTestCase)
             where T : struct, IEquatable<T>
         {
-            for (var index = 0; index < Levels.Count; index++)
+            for (var index = _startingLevel; index < Levels.Count; index++)
             {
                 var level = Levels[index];
                 Print($"Running {level.Name}...\n\n", ConsoleColor.Yellow);
