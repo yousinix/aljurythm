@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Aljurythm")]
-[assembly: AssemblyDescription("Test your algorithms analysis and design course's assignments and competitions.")]
+[assembly: AssemblyDescription("Better judge for Algorithm course's problems.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("YoussefRaafatNasry")]
 [assembly: AssemblyProduct("Aljurythm")]
-[assembly: AssemblyCopyright("Copyright ©  2019")]
+[assembly: AssemblyCopyright("Copyright © 2019, YoussefRaafatNasry")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
