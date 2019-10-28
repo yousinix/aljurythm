@@ -7,11 +7,11 @@ namespace Aljurythm
         public int TotalCases { get; set; }
         public int FailedCases { get; set; } = 0;
         public double CompletedCases => TotalCases - FailedCases;
-        public double Percentage => CompletedCases / TotalCases * 100;
+        public double Percentage => Math.Round(CompletedCases / TotalCases * 100, 2);
 
         public double TotalTime { get; set; } = 0;
         public double MaxTime { get; set; } = -1;
-        public double AvgTime => TotalTime / TotalCases;
+        public double AvgTime => Math.Round(TotalTime / TotalCases, 2);
 
         public void UpdateTime<T>(TestCase<T> testCase) where T : struct, IEquatable<T>
         {
@@ -22,7 +22,7 @@ namespace Aljurythm
         public void Print()
         {
             const int col1Width = 18;
-            const int col2Width = 10;
+            const int col2Width = 14;
             const int col1Alignment = -col1Width + 2;
             const int col2Alignment = -col2Width + 2;
             var col1Separator = new string('─', col1Width);
