@@ -7,6 +7,9 @@ namespace Aljurythm
 {
     public class InputsList : List<string>
     {
+
+        public bool Multiline { get; set; } = true;
+
         public void AddInput(Expression<Func<object>> expression)
         {
             var operand = (expression.Body as UnaryExpression)?.Operand;
@@ -18,6 +21,6 @@ namespace Aljurythm
             Add($"{inputName} = {inputValue}");
         }
 
-        public override string ToString() => this.Aggregate("", (acc, s) => $"{acc}{s}\n");
+        public override string ToString() => string.Join(Multiline ? "\n" : ", ", this) + "\n";
     }
 }

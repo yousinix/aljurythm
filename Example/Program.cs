@@ -42,9 +42,10 @@ namespace Example
                 var operand2 = int.Parse(operands[1]);
 
                 // Assign TestCase's expected value
-                testCase.Expected = int.Parse(streamReader.ReadLine()); 
+                testCase.Expected = int.Parse(streamReader.ReadLine());
 
                 // Used in Displaying inputs if level.DisplayInputs == true [optional]
+                testCase.Inputs.Multiline = false;
                 testCase.Inputs.AddInput(() => operand1);
                 testCase.Inputs.AddInput(() => operand2);
 
