@@ -6,5 +6,6 @@
         public string Path { get; set; }
         public long TimeLimit { get; set; }
         public double MultiplierFactor { get; set; } = 1;
+        internal Statistics Statistics { get; set; } = new Statistics();
     }
 }

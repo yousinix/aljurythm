@@ -14,18 +14,19 @@ namespace Aljurythm
             for (var index = 0; index < Levels.Count; index++)
             {
                 var level = Levels[index];
-                Console.WriteLine($"Running {level.Name}...");
+                Print($"Running {level.Name}...\n\n", ConsoleColor.Yellow);
 
                 using (var streamReader = new StreamReader(level.Path))
                 {
-                    var nCases = Convert.ToInt32(streamReader.ReadLine());
-                    var paddingLength = nCases.ToString().Length;
+                    level.Statistics.TotalCases = Convert.ToInt32(streamReader.ReadLine());
+                    var paddingLength = level.Statistics.TotalCases.ToString().Length;
 
-                    for (var i = 0; i < nCases; i++)
+                    for (var i = 0; i < level.Statistics.TotalCases; i++)
                     {
                         Console.Write($"Case {(i + 1).ToString().PadLeft(paddingLength, '0')}: ");
 
                         var testCase = evaluateTestCase(level, streamReader);
+                        level.Statistics.UpdateTime(testCase);
 
                         if (testCase.Time > level.TimeLimit)
                         {
@@ -35,6 +36,7 @@ namespace Aljurythm
 
                         if (!testCase.Actual.Equals(testCase.Expected))
                         {
+                            level.Statistics.FailedCases++;
                             Print($"FAILED [Actual = {testCase.Actual} :: Expected = {testCase.Expected}]\n",
                                 ConsoleColor.Red);
                         }
@@ -44,9 +46,9 @@ namespace Aljurythm
                         }
                     }
 
-                    Console.WriteLine($"{level.Name} Completed Successfully!");
                 }
 
+                level.Statistics.Print();
                 if (index == Levels.Count - 1) continue;
                 Print($"Run {Levels[index + 1].Name}? (y/N) ", ConsoleColor.Yellow);
                 var choice = Console.ReadKey().KeyChar;
