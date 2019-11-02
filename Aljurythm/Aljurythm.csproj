@@ -47,7 +47,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entry.cs" />
-    <Compile Include="InputsList.cs" />
     <Compile Include="Statistics.cs" />
     <Compile Include="TestCase.cs" />
     <Compile Include="Jury.cs" />

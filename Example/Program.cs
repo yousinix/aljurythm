@@ -17,9 +17,10 @@ namespace Example
                     {
                         Name = "Sample Cases",
                         Path = @"Tests/sample.txt",
-                        TimeLimit = 20,
-                        MultiplierFactor = 1E6,
-                        DisplayInputs = true
+                        TimeLimit = 35,
+                        MultiplierFactor = 1E4,
+                        DisplayInputs = true,
+                        InputSeparator = ", "
                     },
                     new Level
                     {
@@ -35,25 +36,17 @@ namespace Example
             jury.Evaluate((level, streamReader) =>
             {
                 // Create an instance from TestCase using the type of the result.
-                var testCase = new TestCase<int>();
+                var testCase = new TestCase<int>(level.InputSeparator);
 
-                // Specify how to read a single test case (input and expected result)
-                // from the Level's file, using streamReader to read the file.
                 var operands = streamReader.ReadLine().Split(' ');
-                var operand1 = int.Parse(operands[0]);
-                var operand2 = int.Parse(operands[1]);
-
-                // Assign TestCase's expected value
+                testCase["x"] = int.Parse(operands[0]);
+                testCase["y"] = int.Parse(operands[1]);
                 testCase.Expected = int.Parse(streamReader.ReadLine());
-
-                // Used in Displaying inputs if level.DisplayInputs == true [optional]
-                testCase.Inputs.Multiline = false;
-                testCase.Inputs.AddInput(() => operand1);
-                testCase.Inputs.AddInput(() => operand2);
 
                 // Test the required Algorithms using the inputs as follow:
                 // P.S: You can multiply the runtime to make sure the order is as required.
-                testCase.Test(() => RunAlgorithm(operand1, operand2), level.MultiplierFactor);
+                testCase.Test(() => RunAlgorithm((int)testCase["x"], (int)testCase["y"]));
+
                 return testCase;
             });
 

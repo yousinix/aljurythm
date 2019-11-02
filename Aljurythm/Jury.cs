@@ -82,7 +82,7 @@ namespace Aljurythm
                         {
                             if (!level.DisplayLog) Console.Write($"Case {caseNumber}: ");
                             Print("TIME LIMIT EXCEEDED\n", ConsoleColor.Blue);
-                            if (level.DisplayInputs) Console.WriteLine(testCase.Inputs);
+                            if (level.DisplayInputs) testCase.PrintInput();
                             return;
                         }
 
@@ -99,7 +99,7 @@ namespace Aljurythm
                         }
 
                         if (!level.DisplayLog && level.DisplayInputs) Console.WriteLine();
-                        if (level.DisplayInputs) Console.WriteLine(testCase.Inputs);
+                        if (level.DisplayInputs) testCase.PrintInput();
 
                     }
 
