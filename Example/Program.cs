@@ -8,7 +8,7 @@ namespace Example
         private static void Main(string[] args)
         {
 
-            var jury = new Jury
+            var jury = new Jury<int>
             {
                 Name = "Sum Algorithm",
                 Levels = new List<Level>
@@ -18,7 +18,7 @@ namespace Example
                         Name = "Sample Cases",
                         Path = @"Tests/sample.txt",
                         TimeLimit = 35,
-                        MultiplierFactor = 1E4,
+                        RunMultiplier = 1E4,
                         DisplayInputs = true,
                         InputSeparator = ", "
                     },
@@ -29,26 +29,23 @@ namespace Example
                         TimeLimit = 8,
                         DisplayLog = false
                     }
-                }
+                },
+                // Specify how to read a single test case (input and expected result)
+                // from the Level's file, using streamReader to read the file.
+                ReadInput = (testCase, streamReader) =>
+                {
+                    var operands = streamReader.ReadLine().Split(' ');
+                    testCase["x"] = int.Parse(operands[0]);
+                    testCase["y"] = int.Parse(operands[1]);
+                    testCase.Expected = int.Parse(streamReader.ReadLine());
+                },
+                // Test the required Algorithms using the inputs as follow:
+                // (The algorithm is run as many times as Level.RunMultiplier)
+                Algorithm = testCase => RunAlgorithm((int)testCase["x"], (int)testCase["y"])
             };
 
             jury.DisplayMenu();
-            jury.Evaluate((level, streamReader) =>
-            {
-                // Create an instance from TestCase using the type of the result.
-                var testCase = new TestCase<int>(level.InputSeparator);
-
-                var operands = streamReader.ReadLine().Split(' ');
-                testCase["x"] = int.Parse(operands[0]);
-                testCase["y"] = int.Parse(operands[1]);
-                testCase.Expected = int.Parse(streamReader.ReadLine());
-
-                // Test the required Algorithms using the inputs as follow:
-                // P.S: You can multiply the runtime to make sure the order is as required.
-                testCase.Test(() => RunAlgorithm((int)testCase["x"], (int)testCase["y"]));
-
-                return testCase;
-            });
+            jury.Start();
 
         }
 

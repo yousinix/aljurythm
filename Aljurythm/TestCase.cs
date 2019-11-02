@@ -22,16 +22,19 @@ namespace Aljurythm
 
         public Dictionary<string, object> Inputs { get; set; } = new Dictionary<string, object>();
 
-        public object this[string i]
+        public object this[string key]
         {
-            get => Inputs[i];
-            set => Inputs[i] = value;
+            get => Inputs[key];
+            set => Inputs[key] = value;
         }
 
-        public void Test(Func<TResult> algorithm, double multiplierFactor = 1)
+        public void RunAlgorithm(Func<TResult> algorithm, double multiplierFactor)
         {
             _stopwatch = Stopwatch.StartNew();
-            for (var i = 0; i < multiplierFactor; i++) Actual = algorithm();
+            for (var i = 0; i < multiplierFactor; i++)
+            {
+                Actual = algorithm();
+            }
             _stopwatch.Stop();
             Time = _stopwatch.ElapsedMilliseconds;
         }

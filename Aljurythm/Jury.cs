@@ -4,11 +4,11 @@ using System.IO;
 
 namespace Aljurythm
 {
-    public class Jury
+    public class Jury<TResult> where TResult : struct, IEquatable<TResult>
     {
-        private int _startingLevel;
-        private string _name;
         private List<Level> _levels;
+        private string _name;
+        private int _startingLevel;
 
         public string Name
         {
@@ -36,6 +36,10 @@ namespace Aljurythm
             }
         }
 
+        public Action<TestCase<TResult>, StreamReader> ReadInput { get; set; }
+
+        public Func<TestCase<TResult>, TResult> Algorithm { get; set; }
+
         public void DisplayMenu()
         {
             if (!string.IsNullOrEmpty(_name))
@@ -44,10 +48,7 @@ namespace Aljurythm
                 Console.WriteLine(new string('─', Name.Length + 1));
             }
 
-            for (var i = 0; i < Levels.Count; i++)
-            {
-                Console.WriteLine($"[{i + 1}] {Levels[i].Name}");
-            }
+            for (var i = 0; i < Levels.Count; i++) Console.WriteLine($"[{i + 1}] {Levels[i].Name}");
             Console.WriteLine();
 
             Console.Write($"Enter your choice [1~{Levels.Count}]: ");
@@ -57,8 +58,7 @@ namespace Aljurythm
             Console.Clear();
         }
 
-        public void Evaluate<T>(Func<Level, StreamReader, TestCase<T>> evaluateTestCase)
-            where T : struct, IEquatable<T>
+        public void Start()
         {
             for (var index = _startingLevel; index < Levels.Count; index++)
             {
@@ -72,11 +72,15 @@ namespace Aljurythm
 
                     for (var i = 0; i < level.Statistics.TotalCases; i++)
                     {
+                        // Inputs and Algorithm Processing
+                        var testCase = new TestCase<TResult>(level.InputSeparator);
+                        ReadInput(testCase, streamReader);
+                        testCase.RunAlgorithm(() => Algorithm(testCase), level.RunMultiplier);
+                        level.Statistics.UpdateTime(testCase);
+
+                        // Log and Inputs Printing
                         var caseNumber = (i + 1).ToString().PadLeft(paddingLength, '0');
                         if (level.DisplayLog || level.DisplayInputs) Console.Write($"Case {caseNumber}: ");
-
-                        var testCase = evaluateTestCase(level, streamReader);
-                        level.Statistics.UpdateTime(testCase);
 
                         if (testCase.Time > level.TimeLimit)
                         {
@@ -91,7 +95,7 @@ namespace Aljurythm
                             level.Statistics.FailedCases++;
                             if (!level.DisplayLog) Console.Write($"Case {caseNumber}: ");
                             Print($"FAILED [Actual = {testCase.Actual} :: Expected = {testCase.Expected}]\n",
-                            ConsoleColor.Red);
+                                ConsoleColor.Red);
                         }
                         else if (level.DisplayLog)
                         {
@@ -100,9 +104,7 @@ namespace Aljurythm
 
                         if (!level.DisplayLog && level.DisplayInputs) Console.WriteLine();
                         if (level.DisplayInputs) testCase.PrintInput();
-
                     }
-
                 }
 
                 level.Statistics.Print();
@@ -114,6 +116,7 @@ namespace Aljurythm
                     Console.WriteLine();
                     break;
                 }
+
                 Console.SetCursorPosition(0, Console.CursorTop);
                 Console.WriteLine(new string(' ', Console.WindowWidth));
             }
