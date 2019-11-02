@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
 namespace Aljurythm
@@ -8,7 +9,7 @@ namespace Aljurythm
     {
         private List<Level> _levels;
         private string _name;
-        private int _startingLevel;
+        private int _startingLevel = int.MaxValue;
 
         public string Name
         {
@@ -20,6 +21,10 @@ namespace Aljurythm
                     Console.Title = Name;
             }
         }
+
+        public string ProblemLink { get; set; }
+
+        public string SubmissionLink { get; set; }
 
         public List<Level> Levels
         {
@@ -40,22 +45,56 @@ namespace Aljurythm
 
         public Func<TestCase<TResult>, TResult> Algorithm { get; set; }
 
-        public void DisplayMenu()
+        public void DisplayMenu(bool extraOptions = true)
         {
-            if (!string.IsNullOrEmpty(_name))
+            while (true)
             {
-                Print($"{Name}:\n", ConsoleColor.Magenta);
-                Console.WriteLine(new string('─', Name.Length + 1));
+                if (!string.IsNullOrEmpty(_name))
+                {
+                    Print($"{Name}:\n", ConsoleColor.Magenta);
+                    Console.WriteLine(new string('─', Name.Length + 1));
+                }
+
+                for (var i = 0; i < Levels.Count; i++) Console.WriteLine($"[{i + 1}] {Levels[i].Name}");
+
+                if (extraOptions)
+                {
+                    Console.WriteLine();
+                    Print(ProblemLink != null ? "[p] Problem Description\n" : "", ConsoleColor.Blue);
+                    Print(SubmissionLink != null ? "[s] Submit Solution\n" : "", ConsoleColor.Blue);
+                    Print("[*] Contribute to Aljurythm\n", ConsoleColor.Blue);
+                }
+
+                Console.WriteLine();
+
+                Console.Write("> ");
+                var choice = Console.ReadKey().KeyChar.ToString();
+                Console.Clear();
+
+                switch (choice)
+                {
+                    case "p":
+                        if (ProblemLink == null) break;
+                        Process.Start(ProblemLink);
+                        continue;
+                    case "s":
+                        if (SubmissionLink == null) break;
+                        Process.Start(SubmissionLink);
+                        continue;
+                    case "*":
+                        Print("Opening Aljurythm on GitHub\n", ConsoleColor.Blue);
+                        Process.Start("https://github.com/YoussefRaafatNasry/aljurythm");
+                        Console.Clear();
+                        continue;
+                    default:
+                        var isNumeric = int.TryParse(choice, out var n);
+                        if (!isNumeric || n < 0 || n > Levels.Count) continue;
+                        _startingLevel = --n;
+                        break;
+                }
+
+                break;
             }
-
-            for (var i = 0; i < Levels.Count; i++) Console.WriteLine($"[{i + 1}] {Levels[i].Name}");
-            Console.WriteLine();
-
-            Console.Write($"Enter your choice [1~{Levels.Count}]: ");
-            var choice = Console.ReadKey().KeyChar.ToString();
-            var isNumeric = int.TryParse(choice, out var n);
-            _startingLevel = isNumeric ? n - 1 : Levels.Count;
-            Console.Clear();
         }
 
         public void Start()
