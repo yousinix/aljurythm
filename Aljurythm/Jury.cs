@@ -51,25 +51,24 @@ namespace Aljurythm
             {
                 if (!string.IsNullOrEmpty(_name))
                 {
-                    Print($"{Name}:\n", ConsoleColor.Magenta);
-                    Console.WriteLine(new string('─', Name.Length + 1));
+                    Logger.WriteLine($"{Name}:", ConsoleColor.Magenta);
+                    Logger.WriteLine(new string('─', Name.Length + 1));
                 }
 
-                for (var i = 0; i < Levels.Count; i++) Console.WriteLine($"[{i + 1}] {Levels[i].Name}");
+                for (var i = 0; i < Levels.Count; i++) Logger.WriteLine($"[{i + 1}] {Levels[i].Name}");
 
                 if (extraOptions)
                 {
-                    Console.WriteLine();
-                    Print(ProblemLink != null ? "[p] Problem Description\n" : "", ConsoleColor.Blue);
-                    Print(SubmissionLink != null ? "[s] Submit Solution\n" : "", ConsoleColor.Blue);
-                    Print("[*] Contribute to Aljurythm\n", ConsoleColor.Blue);
+                    Logger.LineBreak();
+                    Logger.WriteLine(ProblemLink != null ? "[p] Problem Description" : "", ConsoleColor.Blue);
+                    Logger.WriteLine(SubmissionLink != null ? "[s] Submit Solution" : "", ConsoleColor.Blue);
+                    Logger.WriteLine("[*] Contribute to Aljurythm", ConsoleColor.Blue);
                 }
 
-                Console.WriteLine();
-
-                Console.Write("> ");
+                Logger.LineBreak();
+                Logger.Write("> ");
                 var choice = Console.ReadKey().KeyChar.ToString();
-                Console.Clear();
+                Logger.Clear();
 
                 switch (choice)
                 {
@@ -82,9 +81,9 @@ namespace Aljurythm
                         Process.Start(SubmissionLink);
                         continue;
                     case "*":
-                        Print("Opening Aljurythm on GitHub\n", ConsoleColor.Blue);
+                        Logger.WriteLine("Opening Aljurythm on GitHub", ConsoleColor.Blue);
                         Process.Start("https://github.com/YoussefRaafatNasry/aljurythm");
-                        Console.Clear();
+                        Logger.Clear();
                         continue;
                     default:
                         var isNumeric = int.TryParse(choice, out var n);
@@ -102,7 +101,8 @@ namespace Aljurythm
             for (var index = _startingLevel; index < Levels.Count; index++)
             {
                 var level = Levels[index];
-                Print($"Running {level.Name}...\n\n", ConsoleColor.Yellow);
+                Logger.WriteLine($"Running {level.Name}...", ConsoleColor.Yellow);
+                Logger.LineBreak();
 
                 using (var streamReader = new StreamReader(level.Path))
                 {
@@ -119,12 +119,12 @@ namespace Aljurythm
 
                         // Log and Inputs Printing
                         var caseNumber = (i + 1).ToString().PadLeft(paddingLength, '0');
-                        if (level.DisplayLog || level.DisplayInputs) Console.Write($"Case {caseNumber}: ");
+                        if (level.DisplayLog || level.DisplayInputs) Logger.Write($"Case {caseNumber}: ");
 
                         if (testCase.Time > level.TimeLimit)
                         {
-                            if (!level.DisplayLog) Console.Write($"Case {caseNumber}: ");
-                            Print("TIME LIMIT EXCEEDED\n", ConsoleColor.Blue);
+                            if (!level.DisplayLog) Logger.Write($"Case {caseNumber}: ");
+                            Logger.WriteLine("TIME LIMIT EXCEEDED", ConsoleColor.Blue);
                             if (level.DisplayInputs) testCase.PrintInput();
                             return;
                         }
@@ -132,40 +132,28 @@ namespace Aljurythm
                         if (!testCase.Actual.Equals(testCase.Expected))
                         {
                             level.Statistics.FailedCases++;
-                            if (!level.DisplayLog) Console.Write($"Case {caseNumber}: ");
-                            Print($"FAILED [Actual = {testCase.Actual} :: Expected = {testCase.Expected}]\n",
+                            if (!level.DisplayLog) Logger.Write($"Case {caseNumber}: ");
+                            Logger.WriteLine($"FAILED [Actual = {testCase.Actual} :: Expected = {testCase.Expected}]",
                                 ConsoleColor.Red);
                         }
                         else if (level.DisplayLog)
                         {
-                            Print($"COMPLETED [{testCase.Time} ms]\n", ConsoleColor.Green);
+                            Logger.WriteLine($"COMPLETED [{testCase.Time} ms]", ConsoleColor.Green);
                         }
 
-                        if (!level.DisplayLog && level.DisplayInputs) Console.WriteLine();
+                        if (!level.DisplayLog && level.DisplayInputs) Logger.LineBreak();
                         if (level.DisplayInputs) testCase.PrintInput();
                     }
                 }
 
                 level.Statistics.Print();
                 if (index == Levels.Count - 1) continue;
-                Print($"Run {Levels[index + 1].Name}? (y/N) ", ConsoleColor.Yellow);
+                var nextLevel = Levels[index + 1];
+                Logger.Write($"Run {nextLevel.Name}? (y/N) ", ConsoleColor.Yellow);
                 var choice = Console.ReadKey().KeyChar;
-                if (char.ToLower(choice) != 'y')
-                {
-                    Console.WriteLine();
-                    break;
-                }
-
-                Console.SetCursorPosition(0, Console.CursorTop);
-                Console.WriteLine(new string(' ', Console.WindowWidth));
+                Logger.ClearLast();
+                if (char.ToLower(choice) != 'y') break;
             }
-        }
-
-        private static void Print(string message, ConsoleColor color)
-        {
-            Console.ForegroundColor = color;
-            Console.Write(message);
-            Console.ResetColor();
         }
     }
 }

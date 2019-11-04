@@ -28,22 +28,22 @@ namespace Aljurythm
             var col1Separator = new string('─', col1Width);
             var col2Separator = new string('─', col2Width);
 
-            Console.WriteLine();
-            Console.WriteLine("┌" + col1Separator + "┬" + col2Separator + "┐");
+            Logger.LineBreak();
+            Logger.WriteLine("┌" + col1Separator + "┬" + col2Separator + "┐");
 
-            Console.WriteLine($"│ {"Total Cases",col1Alignment} │ {TotalCases,col2Alignment} │");
-            Console.WriteLine($"│ {"Failed",col1Alignment} │ {FailedCases,col2Alignment} │");
-            Console.WriteLine($"│ {"Completed",col1Alignment} │ {CompletedCases,col2Alignment} │");
-            Console.WriteLine($"│ {"Percentage",col1Alignment} │ {AddSuffix(Percentage, "%"),col2Alignment} │");
+            Logger.WriteLine($"│ {"Total Cases",col1Alignment} │ {TotalCases,col2Alignment} │");
+            Logger.WriteLine($"│ {"Failed",col1Alignment} │ {FailedCases,col2Alignment} │");
+            Logger.WriteLine($"│ {"Completed",col1Alignment} │ {CompletedCases,col2Alignment} │");
+            Logger.WriteLine($"│ {"Percentage",col1Alignment} │ {AddSuffix(Percentage, "%"),col2Alignment} │");
 
-            Console.WriteLine("├" + col1Separator + "┼" + col2Separator + "┤");
+            Logger.WriteLine("├" + col1Separator + "┼" + col2Separator + "┤");
 
-            Console.WriteLine($"│ {"Total Time",col1Alignment} │ {AddSuffix(TotalTime, " ms"),col2Alignment} │");
-            Console.WriteLine($"│ {"Maximum",col1Alignment} │ {AddSuffix(MaxTime, " ms"),col2Alignment} │");
-            Console.WriteLine($"│ {"Average",col1Alignment} │ {AddSuffix(AvgTime, " ms"),col2Alignment} │");
+            Logger.WriteLine($"│ {"Total Time",col1Alignment} │ {AddSuffix(TotalTime, " ms"),col2Alignment} │");
+            Logger.WriteLine($"│ {"Maximum",col1Alignment} │ {AddSuffix(MaxTime, " ms"),col2Alignment} │");
+            Logger.WriteLine($"│ {"Average",col1Alignment} │ {AddSuffix(AvgTime, " ms"),col2Alignment} │");
 
-            Console.WriteLine("└" + col1Separator + "┴" + col2Separator + "┘");
-            Console.WriteLine();
+            Logger.WriteLine("└" + col1Separator + "┴" + col2Separator + "┘");
+            Logger.LineBreak();
         }
 
         private static string AddSuffix(dynamic val, string suffix) => $"{val}{suffix}";

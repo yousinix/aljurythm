@@ -42,7 +42,8 @@ namespace Aljurythm
         public void PrintInput()
         {
             var array = Inputs.Select(p => $"{p.Key} = {p.Value}").ToArray();
-            Console.WriteLine(string.Join(_inputSeparator, array) + "\n");
+            Logger.WriteLine(string.Join(_inputSeparator, array));
+            Logger.LineBreak();
         }
     }
 }
