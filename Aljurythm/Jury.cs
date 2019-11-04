@@ -67,26 +67,26 @@ namespace Aljurythm
 
                 Logger.LineBreak();
                 Logger.Write("> ");
-                var choice = Console.ReadKey().KeyChar.ToString();
+                var choice = char.ToLower(Console.ReadKey().KeyChar);
                 Logger.Clear();
 
                 switch (choice)
                 {
-                    case "p":
+                    case 'p':
                         if (ProblemLink == null) break;
                         Process.Start(ProblemLink);
                         continue;
-                    case "s":
+                    case 's':
                         if (SubmissionLink == null) break;
                         Process.Start(SubmissionLink);
                         continue;
-                    case "*":
+                    case '*':
                         Logger.WriteLine("Opening Aljurythm on GitHub", ConsoleColor.Blue);
                         Process.Start("https://github.com/YoussefRaafatNasry/aljurythm");
                         Logger.Clear();
                         continue;
                     default:
-                        var isNumeric = int.TryParse(choice, out var n);
+                        var isNumeric = int.TryParse(choice.ToString(), out var n);
                         if (!isNumeric || n < 0 || n > Levels.Count) continue;
                         _startingLevel = --n;
                         break;
@@ -107,52 +107,53 @@ namespace Aljurythm
                 using (var streamReader = new StreamReader(level.Path))
                 {
                     level.Statistics.TotalCases = Convert.ToInt32(streamReader.ReadLine());
-                    var paddingLength = level.Statistics.TotalCases.ToString().Length;
+                    var padding = level.Statistics.TotalCases.ToString().Length;
 
                     for (var i = 0; i < level.Statistics.TotalCases; i++)
                     {
                         // Inputs and Algorithm Processing
-                        var testCase = new TestCase<TResult>(level.InputSeparator);
+                        var testCase = new TestCase<TResult>(level, i, padding);
                         ReadInput(testCase, streamReader);
-                        testCase.RunAlgorithm(() => Algorithm(testCase), level.RunMultiplier);
+                        testCase.RunAlgorithm(() => Algorithm(testCase));
                         level.Statistics.UpdateTime(testCase);
 
                         // Log and Inputs Printing
-                        var caseNumber = (i + 1).ToString().PadLeft(paddingLength, '0');
-                        if (level.DisplayLog || level.DisplayInputs) Logger.Write($"Case {caseNumber}: ");
+                        if (level.DisplayLog) Logger.Write($"Case {testCase.Number}: ");
 
-                        if (testCase.Time > level.TimeLimit)
+                        if (testCase.HasExceededTimeLimit)
                         {
-                            if (!level.DisplayLog) Logger.Write($"Case {caseNumber}: ");
+                            if (!level.DisplayLog) Logger.Write($"Case {testCase.Number}: ");
                             Logger.WriteLine("TIME LIMIT EXCEEDED", ConsoleColor.Blue);
                             if (level.DisplayInputs) testCase.PrintInput();
                             return;
                         }
 
-                        if (!testCase.Actual.Equals(testCase.Expected))
+                        if (testCase.HasFailed)
                         {
                             level.Statistics.FailedCases++;
-                            if (!level.DisplayLog) Logger.Write($"Case {caseNumber}: ");
-                            Logger.WriteLine($"FAILED [Actual = {testCase.Actual} :: Expected = {testCase.Expected}]",
-                                ConsoleColor.Red);
+                            if (!level.DisplayLog) Logger.Write($"Case {testCase.Number}: ");
+                            Logger.WriteLine($"FAILED [Actual = {testCase.Actual} " +
+                                             $":: Expected = {testCase.Expected}]", ConsoleColor.Red);
                         }
                         else if (level.DisplayLog)
                         {
                             Logger.WriteLine($"COMPLETED [{testCase.Time} ms]", ConsoleColor.Green);
                         }
 
-                        if (!level.DisplayLog && level.DisplayInputs) Logger.LineBreak();
-                        if (level.DisplayInputs) testCase.PrintInput();
+                        if (!level.DisplayInputs) continue;
+                        if (!level.DisplayLog) Logger.WriteLine($"Case {testCase.Number}: ");
+                        testCase.PrintInput();
                     }
                 }
 
                 level.Statistics.Print();
+
                 if (index == Levels.Count - 1) continue;
                 var nextLevel = Levels[index + 1];
                 Logger.Write($"Run {nextLevel.Name}? (y/N) ", ConsoleColor.Yellow);
-                var choice = Console.ReadKey().KeyChar;
+                var choice = char.ToLower(Console.ReadKey().KeyChar);
                 Logger.ClearLast();
-                if (char.ToLower(choice) != 'y') break;
+                if (choice != 'y') break;
             }
         }
     }

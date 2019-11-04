@@ -9,7 +9,7 @@ namespace Aljurythm
         public double CompletedCases => TotalCases - FailedCases;
         public double Percentage => Math.Round(CompletedCases / TotalCases * 100, 2);
 
-        public double TotalTime { get; set; } = 0;
+        public double TotalTime { get; set; }
         public double MaxTime { get; set; } = -1;
         public double AvgTime => Math.Round(TotalTime / TotalCases, 2);
 
@@ -46,6 +46,9 @@ namespace Aljurythm
             Logger.LineBreak();
         }
 
-        private static string AddSuffix(dynamic val, string suffix) => $"{val}{suffix}";
+        private static string AddSuffix(dynamic val, string suffix)
+        {
+            return $"{val}{suffix}";
+        }
     }
 }
