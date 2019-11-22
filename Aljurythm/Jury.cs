@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Aljurythm
 {
-    public class Jury<TResult> where TResult : struct, IEquatable<TResult>
+    public class Jury
     {
         private List<Level> _levels;
         private string _name;
@@ -41,9 +41,9 @@ namespace Aljurythm
             }
         }
 
-        public Action<TestCase<TResult>, StreamReader> ReadInput { get; set; }
+        public Action<TestCase, StreamReader> Parse { get; set; }
 
-        public Func<TestCase<TResult>, TResult> Algorithm { get; set; }
+        public Action<TestCase> Algorithm { get; set; }
 
         public void DisplayMenu(bool extraOptions = true)
         {
@@ -112,19 +112,19 @@ namespace Aljurythm
                     for (var i = 0; i < level.Statistics.TotalCases; i++)
                     {
                         // Inputs and Algorithm Processing
-                        var testCase = new TestCase<TResult>(level, i, padding);
-                        ReadInput(testCase, streamReader);
-                        testCase.RunAlgorithm(() => Algorithm(testCase));
+                        var testCase = new TestCase(level, i, padding);
+                        Parse(testCase, streamReader);
+                        testCase.Test(Algorithm);
                         level.Statistics.UpdateTime(testCase);
 
                         // Log and Inputs Printing
-                        if (level.DisplayLog) Logger.Write($"Case {testCase.Number}: ");
+                        if (level.DisplayLog || level.DisplayInputs) Logger.Write($"Case {testCase.Number}: ");
 
                         if (testCase.HasExceededTimeLimit)
                         {
                             if (!level.DisplayLog) Logger.Write($"Case {testCase.Number}: ");
                             Logger.WriteLine("TIME LIMIT EXCEEDED", ConsoleColor.Blue);
-                            if (level.DisplayInputs) testCase.PrintInput();
+                            if (level.DisplayInputs) Logger.WriteLine($"{testCase.InputsLog}\n", ConsoleColor.Cyan);
                             return;
                         }
 
@@ -132,17 +132,15 @@ namespace Aljurythm
                         {
                             level.Statistics.FailedCases++;
                             if (!level.DisplayLog) Logger.Write($"Case {testCase.Number}: ");
-                            Logger.WriteLine($"FAILED [Actual = {testCase.Actual} " +
-                                             $":: Expected = {testCase.Expected}]", ConsoleColor.Red);
+                            Logger.WriteLine("FAILED", ConsoleColor.Red);
+                            if (level.DisplayInputs) Logger.WriteLine(testCase.InputsLog, ConsoleColor.Cyan);
+                            Logger.WriteLine(testCase.FailureLog, ConsoleColor.Red);
                         }
                         else if (level.DisplayLog)
                         {
                             Logger.WriteLine($"COMPLETED [{testCase.Time} ms]", ConsoleColor.Green);
+                            if (level.DisplayInputs) Logger.WriteLine($"{testCase.InputsLog}\n", ConsoleColor.Cyan);
                         }
-
-                        if (!level.DisplayInputs) continue;
-                        if (!level.DisplayLog) Logger.WriteLine($"Case {testCase.Number}: ");
-                        testCase.PrintInput();
                     }
                 }
 

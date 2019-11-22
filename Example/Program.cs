@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Aljurythm;
 
 namespace Example
@@ -7,8 +8,7 @@ namespace Example
     {
         private static void Main(string[] args)
         {
-
-            var jury = new Jury<int>
+            var jury = new Jury
             {
                 Name = "Sum Algorithm",
                 ProblemLink = "https://www.google.com/",
@@ -20,7 +20,7 @@ namespace Example
                         Name = "Sample Cases",
                         Path = @"Tests/sample.txt",
                         TimeLimit = 35,
-                        RunMultiplier = 1E4,
+                        RunMultiplier = 1E5,
                         DisplayInputs = true,
                         InputSeparator = ", "
                     },
@@ -32,25 +32,37 @@ namespace Example
                         DisplayLog = false
                     }
                 },
-                // Specify how to read a single test case (input and expected result)
-                // from the Level's file, using streamReader to read the file.
-                ReadInput = (testCase, streamReader) =>
+                Parse = (testCase, streamReader) =>
                 {
-                    var operands = streamReader.ReadLine().Split(' ');
-                    testCase["x"] = int.Parse(operands[0]);
-                    testCase["y"] = int.Parse(operands[1]);
-                    testCase.Expected = int.Parse(streamReader.ReadLine());
+                    // Inputs
+                    var operands = Convert.ToString(streamReader.ReadLine()).Split(' ');
+                    testCase.Inputs["x"] = Convert.ToInt32(operands[0]);
+                    testCase.Inputs["y"] = Convert.ToInt32(operands[1]);
+
+                    // Expected Results
+                    testCase.ExpectedOutputs["sum"] = Convert.ToInt32(streamReader.ReadLine());
+                    testCase.ExpectedOutputs["mul"] = Convert.ToInt32(streamReader.ReadLine());
                 },
-                // Test the required Algorithms using the inputs as follow:
-                // (The algorithm is run as many times as Level.RunMultiplier)
-                Algorithm = testCase => RunAlgorithm((int)testCase["x"], (int)testCase["y"])
+                Algorithm = testCase =>
+                {
+                    // Pass Test Case's 'Inputs to Algorithm
+                    // Note: The Algorithm is run Level's RunMultiplier times
+                    Algorithm((int)testCase.Inputs["x"], (int)testCase.Inputs["y"], out var sum, out var mul);
+
+                    // Save Actual Outputs
+                    testCase.ActualOutputs["sum"] = sum;
+                    testCase.ActualOutputs["mul"] = mul;
+                }
             };
 
             jury.DisplayMenu();
             jury.Start();
-
         }
 
-        private static int RunAlgorithm(int x, int y) => x + y;
+        private static void Algorithm(int x, int y, out int sum, out int mul)
+        {
+            sum = x + y;
+            mul = x * y;
+        }
     }
 }

@@ -19,6 +19,7 @@ _No more boilerplate code or ugly outputs._
 
 ## Why Aljurythm?
 
+1. Supports multiple outputs.
 1. Colored outputs and better alignment.
 1. Less boilerplate code to test your algorithm.
 1. Statistics after finishing each level.

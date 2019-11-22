@@ -13,7 +13,7 @@ namespace Aljurythm
         public double MaxTime { get; set; } = -1;
         public double AvgTime => Math.Round(TotalTime / TotalCases, 2);
 
-        public void UpdateTime<T>(TestCase<T> testCase) where T : struct, IEquatable<T>
+        public void UpdateTime(TestCase testCase)
         {
             TotalTime += testCase.Time;
             MaxTime = MaxTime > testCase.Time ? MaxTime : testCase.Time;
