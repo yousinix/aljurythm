@@ -59,7 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Aljurythm\Aljurythm.csproj">
-      <Project>{5c635afd-eb34-4172-a105-c98e3ed1b39b}</Project>
+      <Project>{e57a725d-7c2e-46a4-925d-dd411a3e6389}</Project>
       <Name>Aljurythm</Name>
     </ProjectReference>
   </ItemGroup>

@@ -9,7 +9,7 @@ _No more boilerplate code or ugly outputs._
 1. Add Aljurythm as a **reference** to your project using:
    - Right click your project from solution explorer.
    - Choose `Add > Reference... > Browse`
-   - Browse the location where you downloaded `Aljurythm.exe`.
+   - Browse the location where you downloaded `Aljurythm.dll`.
 1. Check **[Example/Program.cs](Example/Program.cs)** for more API usage example.
 
 > **Tip:** You can reference Aljurythm as a **project** from your solution, by cloning or [downloading][download-source] the source code and adding the project to your **solution** first then as a reference to the **problem project**. This allows you to **modify** the code upon your needs.
