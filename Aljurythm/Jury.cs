@@ -22,9 +22,9 @@ namespace Aljurythm
             }
         }
 
-        public string ProblemLink { get; set; }
+        public string DescriptionUri { get; set; }
 
-        public string SubmissionLink { get; set; }
+        public string SubmissionUri { get; set; }
 
         public List<Level> Levels
         {
@@ -60,8 +60,8 @@ namespace Aljurythm
                 if (extraOptions)
                 {
                     Logger.LineBreak();
-                    Logger.WriteLine(ProblemLink != null ? "[p] Problem Description" : "", ConsoleColor.Blue);
-                    Logger.WriteLine(SubmissionLink != null ? "[s] Submit Solution" : "", ConsoleColor.Blue);
+                    Logger.WriteLine(DescriptionUri != null ? "[d] Problem DescriptionURI" : "", ConsoleColor.Blue);
+                    Logger.WriteLine(SubmissionUri != null ? "[s] Submit Solution" : "", ConsoleColor.Blue);
                     Logger.WriteLine("[*] Contribute to Aljurythm", ConsoleColor.Blue);
                 }
 
@@ -72,13 +72,13 @@ namespace Aljurythm
 
                 switch (choice)
                 {
-                    case 'p':
-                        if (ProblemLink == null) break;
-                        Process.Start(ProblemLink);
+                    case 'd':
+                        if (DescriptionUri == null) break;
+                        Process.Start(DescriptionUri);
                         continue;
                     case 's':
-                        if (SubmissionLink == null) break;
-                        Process.Start(SubmissionLink);
+                        if (SubmissionUri == null) break;
+                        Process.Start(SubmissionUri);
                         continue;
                     case '*':
                         Logger.WriteLine("Opening Aljurythm on GitHub", ConsoleColor.Blue);

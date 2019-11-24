@@ -10,9 +10,9 @@ namespace Example
         {
             var jury = new Jury
             {
-                Name = "Sum Algorithm",
-                ProblemLink = "https://www.google.com/",
-                SubmissionLink = "https://www.google.com/",
+                Name = "Arithmetic Algorithm",
+                DescriptionUri = @"..\..\Description.txt",
+                SubmissionUri = "https://www.google.com/",
                 Levels = new List<Level>
                 {
                     new Level
