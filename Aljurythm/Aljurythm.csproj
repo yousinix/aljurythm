@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>3.1.0</Version>
+    <Version>3.1.1</Version>
     <Authors>YoussefRaafatNasry</Authors>
     <RepositoryUrl>https://github.com/YoussefRaafatNasry/aljurythm</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -12,11 +12,13 @@
     <PackageProjectUrl>https://github.com/YoussefRaafatNasry/aljurythm</PackageProjectUrl>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AssemblyVersion>3.1.1.0</AssemblyVersion>
+    <FileVersion>3.1.1.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="icon.png" Pack="true" PackagePath="\"/>
-    <None Include="..\LICENSE.md" Pack="true" PackagePath="LICENSE.md"/>
+    <None Include="icon.png" Pack="true" PackagePath="\" />
+    <None Include="..\LICENSE.md" Pack="true" PackagePath="LICENSE.md" />
   </ItemGroup>
 
 </Project>

@@ -60,7 +60,7 @@ namespace Aljurythm
                 if (extraOptions)
                 {
                     Logger.LineBreak();
-                    Logger.WriteLine(DescriptionUri != null ? "[d] Problem DescriptionURI" : "", ConsoleColor.Blue);
+                    Logger.WriteLine(DescriptionUri != null ? "[d] Problem Description" : "", ConsoleColor.Blue);
                     Logger.WriteLine(SubmissionUri != null ? "[s] Submit Solution" : "", ConsoleColor.Blue);
                     Logger.WriteLine("[*] Contribute to Aljurythm", ConsoleColor.Blue);
                 }
@@ -136,9 +136,9 @@ namespace Aljurythm
                             if (level.DisplayInputs) Logger.WriteLine(testCase.InputsLog, ConsoleColor.Cyan);
                             Logger.WriteLine(testCase.FailureLog, ConsoleColor.Red);
                         }
-                        else if (level.DisplayLog)
+                        else
                         {
-                            Logger.WriteLine($"COMPLETED [{testCase.Time} ms]", ConsoleColor.Green);
+                            if (level.DisplayLog) Logger.WriteLine($"COMPLETED [{testCase.Time} ms]", ConsoleColor.Green);
                             if (level.DisplayInputs) Logger.WriteLine($"{testCase.InputsLog}\n", ConsoleColor.Cyan);
                         }
                     }
