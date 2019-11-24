@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Aljurythm;
 
-namespace Example
+namespace Demo
 {
     internal class Program
     {
