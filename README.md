@@ -3,28 +3,20 @@
 A better judge for Algorithm Course's Problems.  
 _No more boilerplate code or ugly outputs._
 
-## How to use?
+## Usage
 
-1. **[Download][download-release]** the latest version compiled of Aljurythm.
-1. Add Aljurythm as a **reference** to your project using:
-   - Right click your project from solution explorer.
-   - Choose `Add > Reference... > Browse`
-   - Browse the location where you downloaded `Aljurythm.dll`.
-1. Check **[Demo/Program.cs](Demo/Program.cs)** for more API usage example.
+1. Install [**Aljurythm Nuget Package**](https://www.nuget.org/packages/Aljurythm/) to your project.*  
+1. View [**Demo/Program.cs**](Demo/Program.cs) for more API usage example.
 
-> **Tip:** You can reference Aljurythm as a **project** from your solution, by cloning or [downloading][download-source] the source code and adding the project to your **solution** first then as a reference to the **problem project**. This allows you to **modify** the code upon your needs.
+> \* Check [Microsoft Docs](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio) for more info.
 
-[download-release]: https://github.com/YoussefRaafatNasry/aljurythm/releases/latest
-[download-source]: https://github.com/YoussefRaafatNasry/aljurythm/archive/master.zip
+## Features
 
-## Why Aljurythm?
-
-1. Supports multiple outputs.
-1. Colored outputs and better alignment.
-1. Less boilerplate code to test your algorithm.
+1. Tiny size _(< 25KB)_.
+1. Easy API usage that substitutes boilerplate code.
+1. Supports multiple returning values using `out` keyword.
 1. Statistics after finishing each level.
-1. Set different time limits for each level.
-1. Display inputs of each test case _[optional per level]_.
-1. Display Log _[optional per level]_.
+1. Customize levels: name, time limit, show/hide inputs/outputs/logs.
+1. Better outputs: colors, tables and alignment.
 
 ![screenshot](screenshot.png)
