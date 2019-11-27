@@ -2,26 +2,26 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>3.1.2</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>A better judge for Algorithm Course's Problems.</Description>
     <Authors>YoussefRaafatNasry</Authors>
-    <RepositoryUrl>https://github.com/YoussefRaafatNasry/aljurythm</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <NeutralLanguage>en-US</NeutralLanguage>
     <Copyright>© 2019 YoussefRaafatNasry.</Copyright>
-    <PackageIcon>icon.png</PackageIcon>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/YoussefRaafatNasry/aljurythm</RepositoryUrl>
     <PackageProjectUrl>https://github.com/YoussefRaafatNasry/aljurythm</PackageProjectUrl>
+    <PackageIcon>ICON.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <Version>3.1.2</Version>
     <AssemblyVersion>3.1.2.0</AssemblyVersion>
     <FileVersion>3.1.2.0</FileVersion>
-    <Description>A better judge for Algorithm Course's Problems.</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="icon.png" Pack="true" PackagePath="icon.png" />
-    <None Include="..\README.md" Pack="true" PackagePath="README.md" />
-    <None Include="..\LICENSE.md" Pack="true" PackagePath="LICENSE.md" />
+    <None Pack="true" PackagePath="\" Include="..\ICON.png" />
+    <None Pack="true" PackagePath="\" Include="..\README.md" />
+    <None Pack="true" PackagePath="\" Include="..\LICENSE.md" />
   </ItemGroup>
 
 </Project>

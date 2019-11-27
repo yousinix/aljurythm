@@ -36,22 +36,22 @@ namespace Demo
                 {
                     // Inputs
                     var operands = Convert.ToString(streamReader.ReadLine()).Split(' ');
-                    testCase.Inputs["x"] = Convert.ToInt32(operands[0]);
-                    testCase.Inputs["y"] = Convert.ToInt32(operands[1]);
+                    testCase.Input["x"] = Convert.ToInt32(operands[0]);
+                    testCase.Input["y"] = Convert.ToInt32(operands[1]);
 
-                    // Expected Results
-                    testCase.ExpectedOutputs["sum"] = Convert.ToInt32(streamReader.ReadLine());
-                    testCase.ExpectedOutputs["mul"] = Convert.ToInt32(streamReader.ReadLine());
+                    // Expected Outputs
+                    testCase.Expected["sum"] = Convert.ToInt32(streamReader.ReadLine());
+                    testCase.Expected["mul"] = Convert.ToInt32(streamReader.ReadLine());
                 },
                 Algorithm = testCase =>
                 {
                     // Pass Test Case's 'Inputs to Algorithm
                     // Note: The Algorithm is run Level's RunMultiplier times
-                    Algorithm((int)testCase.Inputs["x"], (int)testCase.Inputs["y"], out var sum, out var mul);
+                    Algorithm((int)testCase.Input["x"], (int)testCase.Input["y"], out var sum, out var mul);
 
                     // Save Actual Outputs
-                    testCase.ActualOutputs["sum"] = sum;
-                    testCase.ActualOutputs["mul"] = mul;
+                    testCase.Actual["sum"] = sum;
+                    testCase.Actual["mul"] = mul;
                 }
             };
 

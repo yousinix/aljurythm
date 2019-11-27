@@ -11,6 +11,13 @@ namespace Aljurythm
         private string _name;
         private int _startingLevel = int.MaxValue;
 
+
+        public string DescriptionUri { get; set; }
+        public string SubmissionUri { get; set; }
+        public Action<TestCase, StreamReader> Parse { get; set; }
+        public Action<TestCase> Algorithm { get; set; }
+
+
         public string Name
         {
             get => _name;
@@ -21,11 +28,6 @@ namespace Aljurythm
                     Console.Title = Name;
             }
         }
-
-        public string DescriptionUri { get; set; }
-
-        public string SubmissionUri { get; set; }
-
         public List<Level> Levels
         {
             get => _levels;
@@ -41,9 +43,6 @@ namespace Aljurythm
             }
         }
 
-        public Action<TestCase, StreamReader> Parse { get; set; }
-
-        public Action<TestCase> Algorithm { get; set; }
 
         public void DisplayMenu(bool extraOptions = true)
         {
@@ -60,8 +59,8 @@ namespace Aljurythm
                 if (extraOptions)
                 {
                     Logger.LineBreak();
-                    Logger.WriteLine(DescriptionUri != null ? "[d] Problem Description" : "", ConsoleColor.Blue);
-                    Logger.WriteLine(SubmissionUri != null ? "[s] Submit Solution" : "", ConsoleColor.Blue);
+                    if (DescriptionUri != null) Logger.WriteLine("[d] Problem Description", ConsoleColor.Blue);
+                    if (SubmissionUri != null) Logger.WriteLine("[s] Submit Solution", ConsoleColor.Blue);
                     Logger.WriteLine("[*] Contribute to Aljurythm", ConsoleColor.Blue);
                 }
 
@@ -114,7 +113,8 @@ namespace Aljurythm
                         // Inputs and Algorithm Processing
                         var testCase = new TestCase(level, i, padding);
                         Parse(testCase, streamReader);
-                        testCase.Test(Algorithm);
+                        testCase.Run(Algorithm);
+                        testCase.Evaluate();
                         level.Statistics.UpdateTime(testCase);
 
                         // Log and Inputs Printing
@@ -135,6 +135,7 @@ namespace Aljurythm
                             Logger.WriteLine("FAILED", ConsoleColor.Red);
                             if (level.DisplayInputs) Logger.WriteLine(testCase.InputsLog, ConsoleColor.Cyan);
                             Logger.WriteLine(testCase.FailureLog, ConsoleColor.Red);
+                            Logger.LineBreak();
                         }
                         else
                         {
