@@ -2,21 +2,24 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace Aljurythm
 {
     public class Jury
     {
-        private List<Level> _levels;
-        private string _name;
-        private int _startingLevel = int.MaxValue;
+        private const string PackageName = "Aljurythm";
+        private const string PackageUri = "https://github.com/YoussefRaafatNasry/aljurythm";
 
+        private string _name;
+        private int _startingLevel;
+        private List<Level> _levels;
 
         public string DescriptionUri { get; set; }
         public string SubmissionUri { get; set; }
+
         public Action<TestCase, StreamReader> Parse { get; set; }
         public Action<TestCase> Algorithm { get; set; }
-
 
         public string Name
         {
@@ -28,6 +31,7 @@ namespace Aljurythm
                     Console.Title = Name;
             }
         }
+
         public List<Level> Levels
         {
             get => _levels;
@@ -43,56 +47,46 @@ namespace Aljurythm
             }
         }
 
-
-        public void DisplayMenu(bool extraOptions = true)
+        public void ShowMenu()
         {
-            while (true)
+            var menu = new Menu
             {
-                if (!string.IsNullOrEmpty(_name))
-                {
-                    Logger.WriteLine($"{Name}:", ConsoleColor.Magenta);
-                    Logger.WriteLine(new string('─', Name.Length + 1));
-                }
+                Title = Name,
+                MainItems = Levels.Select((lvl, index) =>
+                    new MenuItem
+                    {
+                        HotKey = (index + 1).ToString(),
+                        Text = lvl.Name,
+                        Action = () => _startingLevel = index,
+                        PostAction = MenuItem.PostActionMode.START
+                    }).ToList(),
+                ExtraItems = new List<MenuItem>
+                    {
+                        new MenuItem
+                        {
+                            HotKey = "d",
+                            Text = "Problem Description",
+                            Action = () => Process.Start(DescriptionUri),
+                            Condition = DescriptionUri != null
+                        },
+                        new MenuItem
+                        {
+                            HotKey = "s",
+                            Text = "Submit Solution",
+                            Action = () => Process.Start(SubmissionUri),
+                            Condition = SubmissionUri != null
+                        },
+                        new MenuItem
+                        {
+                            HotKey = "*",
+                            Text = $"Contribute to {PackageName}",
+                            Action = () => Process.Start(PackageUri)
+                        }
+                    }
+            };
 
-                for (var i = 0; i < Levels.Count; i++) Logger.WriteLine($"[{i + 1}] {Levels[i].Name}");
-
-                if (extraOptions)
-                {
-                    Logger.LineBreak();
-                    if (DescriptionUri != null) Logger.WriteLine("[d] Problem Description", ConsoleColor.Blue);
-                    if (SubmissionUri != null) Logger.WriteLine("[s] Submit Solution", ConsoleColor.Blue);
-                    Logger.WriteLine("[*] Contribute to Aljurythm", ConsoleColor.Blue);
-                }
-
-                Logger.LineBreak();
-                Logger.Write("> ");
-                var choice = char.ToLower(Console.ReadKey().KeyChar);
-                Logger.Clear();
-
-                switch (choice)
-                {
-                    case 'd':
-                        if (DescriptionUri == null) break;
-                        Process.Start(DescriptionUri);
-                        continue;
-                    case 's':
-                        if (SubmissionUri == null) break;
-                        Process.Start(SubmissionUri);
-                        continue;
-                    case '*':
-                        Logger.WriteLine("Opening Aljurythm on GitHub", ConsoleColor.Blue);
-                        Process.Start("https://github.com/YoussefRaafatNasry/aljurythm");
-                        Logger.Clear();
-                        continue;
-                    default:
-                        var isNumeric = int.TryParse(choice.ToString(), out var n);
-                        if (!isNumeric || n < 0 || n > Levels.Count) continue;
-                        _startingLevel = --n;
-                        break;
-                }
-
-                break;
-            }
+            menu.Show();
+            menu.Prompt();
         }
 
         public void Start()
@@ -150,9 +144,10 @@ namespace Aljurythm
                 if (index == Levels.Count - 1) continue;
                 var nextLevel = Levels[index + 1];
                 Logger.Write($"Run {nextLevel.Name}? (y/N) ", ConsoleColor.Yellow);
-                var choice = char.ToLower(Console.ReadKey().KeyChar);
+                var choice = Console.ReadLine()?.ToLower();
                 Logger.ClearLast();
-                if (choice != 'y') break;
+                Logger.LineBreak();
+                if (choice != "y") break;
             }
         }
     }

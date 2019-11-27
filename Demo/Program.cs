@@ -18,7 +18,7 @@ namespace Demo
                     new Level
                     {
                         Name = "Sample Cases",
-                        Path = @"Tests/sample.txt",
+                        Path = @"Tests\sample.txt",
                         TimeLimit = 35,
                         RunMultiplier = 1E5,
                         DisplayInputs = true,
@@ -27,7 +27,7 @@ namespace Demo
                     new Level
                     {
                         Name = "Complete Cases",
-                        Path = @"Tests/complete.txt",
+                        Path = @"Tests\complete.txt",
                         TimeLimit = 8,
                         DisplayLog = false
                     }
@@ -55,7 +55,7 @@ namespace Demo
                 }
             };
 
-            jury.DisplayMenu();
+            jury.ShowMenu();
             jury.Start();
         }
 

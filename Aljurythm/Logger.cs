@@ -28,8 +28,9 @@ namespace Aljurythm
 
         internal static void ClearLast()
         {
+            Console.SetCursorPosition(0, Console.CursorTop - 1);
+            Console.Write(new string(' ', Console.WindowWidth - 1));
             Console.SetCursorPosition(0, Console.CursorTop);
-            Console.WriteLine(new string(' ', Console.WindowWidth));
         }
     }
 }
