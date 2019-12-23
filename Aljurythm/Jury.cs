@@ -99,43 +99,40 @@ namespace Aljurythm
 
                 using (var streamReader = new StreamReader(level.Path))
                 {
-                    level.Statistics.TotalCases = Convert.ToInt32(streamReader.ReadLine());
-                    var padding = level.Statistics.TotalCases.ToString().Length;
+                    var cases = Convert.ToInt32(streamReader.ReadLine());
+                    var format = "D" + cases.ToString().Length;
 
-                    for (var i = 0; i < level.Statistics.TotalCases; i++)
+                    for (var i = 0; i < cases; i++)
                     {
                         // Inputs and Algorithm Processing
-                        var testCase = new TestCase(level, i, padding);
+                        var testCase = new TestCase(level, i, format);
                         Parse(testCase, streamReader);
-                        testCase.Run(Algorithm);
-                        testCase.Evaluate();
-                        level.Statistics.UpdateTime(testCase);
+                        var result = testCase.Evaluate(Algorithm);
+                        level.Statistics.Update(result);
 
                         // Log and Inputs Printing
                         if (level.DisplayLog || level.DisplayInputs) Logger.Write($"Case {testCase.Number}: ");
 
-                        if (testCase.HasExceededTimeLimit)
+                        if (result.HasExceededTimeLimit)
                         {
                             if (!level.DisplayLog) Logger.Write($"Case {testCase.Number}: ");
                             Logger.WriteLine("TIME LIMIT EXCEEDED", ConsoleColor.Blue);
-                            if (level.DisplayInputs) Logger.WriteLine($"{testCase.InputsLog}\n", ConsoleColor.Cyan);
+                            if (level.DisplayInputs) Logger.WriteLine($"{testCase.InputsLog()}\n", ConsoleColor.Cyan);
                             return;
                         }
 
-                        if (testCase.HasFailed)
+                        if (result.HasFailed)
                         {
-                            level.Statistics.FailedCases++;
                             if (!level.DisplayLog) Logger.Write($"Case {testCase.Number}: ");
                             Logger.WriteLine("FAILED", ConsoleColor.Red);
-                            if (level.DisplayInputs) Logger.WriteLine(testCase.InputsLog, ConsoleColor.Cyan);
-                            Logger.WriteLine(testCase.FailureLog, ConsoleColor.Red);
+                            if (level.DisplayInputs) Logger.WriteLine(testCase.InputsLog(), ConsoleColor.Cyan);
+                            Logger.WriteLine(testCase.FailureLog(result), ConsoleColor.Red);
                             Logger.LineBreak();
                         }
                         else
                         {
-                            if (level.DisplayLog)
-                                Logger.WriteLine($"COMPLETED [{testCase.Time} ms]", ConsoleColor.Green);
-                            if (level.DisplayInputs) Logger.WriteLine($"{testCase.InputsLog}\n", ConsoleColor.Cyan);
+                            if (level.DisplayLog) Logger.WriteLine($"COMPLETED [{result.ElapsedTime} ms]", ConsoleColor.Green);
+                            if (level.DisplayInputs) Logger.WriteLine($"{testCase.InputsLog()}\n", ConsoleColor.Cyan);
                         }
                     }
                 }

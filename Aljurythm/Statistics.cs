@@ -4,19 +4,20 @@ namespace Aljurythm
 {
     internal class Statistics
     {
-        public int TotalCases { get; set; }
-        public int FailedCases { get; set; }
-
+        private int TotalCases { get; set; }
+        private int FailedCases { get; set; }
         private double CompletedCases => TotalCases - FailedCases;
         private double Percentage => Math.Round(CompletedCases / TotalCases * 100, 2);
         private double TotalTime { get; set; }
         private double MaxTime { get; set; } = -1;
         private double AvgTime => Math.Round(TotalTime / TotalCases, 2);
 
-        public void UpdateTime(TestCase testCase)
+        public void Update(TestResult testResult)
         {
-            TotalTime += testCase.Time;
-            MaxTime = MaxTime > testCase.Time ? MaxTime : testCase.Time;
+            TotalCases++;
+            if (testResult.HasFailed) FailedCases++;
+            TotalTime += testResult.ElapsedTime;
+            MaxTime = MaxTime > testResult.ElapsedTime ? MaxTime : testResult.ElapsedTime;
         }
 
         public void Print()

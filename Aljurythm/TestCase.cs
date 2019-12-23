@@ -9,57 +9,48 @@ namespace Aljurythm
     {
         private readonly Level _level;
         private readonly int _index;
-        private readonly int _padding;
+        private readonly string _format;
 
-        public TestCase(Level level, int index, int padding)
+        public TestCase(Level level, int index, string format)
         {
             _level = level;
             _index = index;
-            _padding = padding;
+            _format = format;
         }
 
-        public string Number => (_index + 1).ToString().PadLeft(_padding, '0');
-        public long Time { get; private set; }
-        public bool HasExceededTimeLimit => Time > _level.TimeLimit;
-        public bool HasFailed => Failed.Count != 0;
-
-
+        public string Number => (_index + 1).ToString(_format);
         public Dictionary<string, object> Input { get; } = new Dictionary<string, object>();
         public Dictionary<string, object> Expected { get; } = new Dictionary<string, object>();
         public Dictionary<string, object> Actual { get; } = new Dictionary<string, object>();
-        private List<string> Failed { get; } = new List<string>();
 
-
-        public string InputsLog
+        public string InputsLog()
         {
-            get
+            var log = Input.Select(p => $"{p.Key} = {p.Value}").ToArray();
+            return string.Join(_level.InputSeparator, log);
+        }
+
+        public string FailureLog(TestResult result)
+        {
+            var log = result.FailedKeys.Select(key => $"[ {key} => you: {Actual[key]} | jury: {Expected[key]} ]");
+            return string.Join("\n", log);
+        }
+
+        public TestResult Evaluate(Action<TestCase> algorithm)
+        {
+            return new TestResult
             {
-                var array = Input.Select(p => $"{p.Key} = {p.Value}").ToArray();
-                return string.Join(_level.InputSeparator, array);
+                TimeLimit = _level.TimeLimit,
+                ElapsedTime = CalculateTime(() => RunMultiplied(algorithm)),
+                FailedKeys = Expected.Where(e => !e.Value.Equals(Actual[e.Key])).Select(x => x.Key).ToList()
+            };
+        }
+
+        private void RunMultiplied(Action<TestCase> algorithm)
+        {
+            for (var i = 0; i < _level.RunMultiplier; i++)
+            {
+                algorithm(this);
             }
-        }
-
-        public string FailureLog
-        {
-            get
-            {
-                var result = Failed.Select(key => $"[ {key} => you: {Actual[key]} | jury: {Expected[key]} ]");
-                return string.Join("\n", result);
-            }
-        }
-
-        public void Run(Action<TestCase> algorithm)
-        {
-            Time = CalculateTime(() =>
-            {
-                for (var i = 0; i < _level.RunMultiplier; i++) algorithm(this);
-            });
-        }
-
-        public void Evaluate()
-        {
-            foreach (var output in Expected.Where(output => !output.Value.Equals(Actual[output.Key])))
-                Failed.Add(output.Key);
         }
 
         private static long CalculateTime(Action action)
