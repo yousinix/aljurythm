@@ -7,8 +7,8 @@ namespace Aljurythm
 {
     public class TestCase
     {
-        private readonly int _index;
         private readonly Level _level;
+        private readonly int _index;
         private readonly int _padding;
 
         public TestCase(Level level, int index, int padding)
@@ -19,15 +19,15 @@ namespace Aljurythm
         }
 
         public string Number => (_index + 1).ToString().PadLeft(_padding, '0');
-        public long Time { get; set; }
+        public long Time { get; private set; }
         public bool HasExceededTimeLimit => Time > _level.TimeLimit;
         public bool HasFailed => Failed.Count != 0;
 
 
-        public Dictionary<string, object> Input { get; set; } = new Dictionary<string, object>();
-        public Dictionary<string, object> Expected { get; set; } = new Dictionary<string, object>();
-        public Dictionary<string, object> Actual { get; set; } = new Dictionary<string, object>();
-        public List<string> Failed { get; set; } = new List<string>();
+        public Dictionary<string, object> Input { get; } = new Dictionary<string, object>();
+        public Dictionary<string, object> Expected { get; } = new Dictionary<string, object>();
+        public Dictionary<string, object> Actual { get; } = new Dictionary<string, object>();
+        private List<string> Failed { get; } = new List<string>();
 
 
         public string InputsLog

@@ -5,13 +5,13 @@ namespace Aljurythm
     internal class Statistics
     {
         public int TotalCases { get; set; }
-        public int FailedCases { get; set; } = 0;
-        public double CompletedCases => TotalCases - FailedCases;
-        public double Percentage => Math.Round(CompletedCases / TotalCases * 100, 2);
+        public int FailedCases { get; set; }
 
-        public double TotalTime { get; set; }
-        public double MaxTime { get; set; } = -1;
-        public double AvgTime => Math.Round(TotalTime / TotalCases, 2);
+        private double CompletedCases => TotalCases - FailedCases;
+        private double Percentage => Math.Round(CompletedCases / TotalCases * 100, 2);
+        private double TotalTime { get; set; }
+        private double MaxTime { get; set; } = -1;
+        private double AvgTime => Math.Round(TotalTime / TotalCases, 2);
 
         public void UpdateTime(TestCase testCase)
         {

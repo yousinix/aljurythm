@@ -19,9 +19,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Pack="true" PackagePath="\" Include="..\ICON.png" />
-    <None Pack="true" PackagePath="\" Include="..\README.md" />
-    <None Pack="true" PackagePath="\" Include="..\LICENSE.md" />
+    <None Pack="true" PackagePath="\" Include="..\ICON.png" Link="Resources\ICON.png" />
+    <None Pack="true" PackagePath="\" Include="..\README.md" Link="Resources\README.md" />
+    <None Pack="true" PackagePath="\" Include="..\LICENSE.md" Link="Resources\LICENSE.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\" />
   </ItemGroup>
 
 </Project>

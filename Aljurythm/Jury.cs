@@ -10,10 +10,10 @@ namespace Aljurythm
     {
         private const string PackageName = "Aljurythm";
         private const string PackageUri = "https://github.com/YoussefRaafatNasry/aljurythm";
+        private List<Level> _levels;
 
         private string _name;
         private int _startingLevel;
-        private List<Level> _levels;
 
         public string DescriptionUri { get; set; }
         public string SubmissionUri { get; set; }
@@ -61,28 +61,28 @@ namespace Aljurythm
                         PostAction = MenuItem.PostActionMode.START
                     }).ToList(),
                 ExtraItems = new List<MenuItem>
+                {
+                    new MenuItem
                     {
-                        new MenuItem
-                        {
-                            HotKey = "d",
-                            Text = "Problem Description",
-                            Action = () => Process.Start(DescriptionUri),
-                            Condition = DescriptionUri != null
-                        },
-                        new MenuItem
-                        {
-                            HotKey = "s",
-                            Text = "Submit Solution",
-                            Action = () => Process.Start(SubmissionUri),
-                            Condition = SubmissionUri != null
-                        },
-                        new MenuItem
-                        {
-                            HotKey = "*",
-                            Text = $"Contribute to {PackageName}",
-                            Action = () => Process.Start(PackageUri)
-                        }
+                        HotKey = "d",
+                        Text = "Problem Description",
+                        Action = () => Process.Start(DescriptionUri),
+                        Condition = DescriptionUri != null
+                    },
+                    new MenuItem
+                    {
+                        HotKey = "s",
+                        Text = "Submit Solution",
+                        Action = () => Process.Start(SubmissionUri),
+                        Condition = SubmissionUri != null
+                    },
+                    new MenuItem
+                    {
+                        HotKey = "*",
+                        Text = $"Contribute to {PackageName}",
+                        Action = () => Process.Start(PackageUri)
                     }
+                }
             };
 
             menu.Show();
@@ -133,7 +133,8 @@ namespace Aljurythm
                         }
                         else
                         {
-                            if (level.DisplayLog) Logger.WriteLine($"COMPLETED [{testCase.Time} ms]", ConsoleColor.Green);
+                            if (level.DisplayLog)
+                                Logger.WriteLine($"COMPLETED [{testCase.Time} ms]", ConsoleColor.Green);
                             if (level.DisplayInputs) Logger.WriteLine($"{testCase.InputsLog}\n", ConsoleColor.Cyan);
                         }
                     }

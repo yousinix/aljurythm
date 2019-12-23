@@ -17,19 +17,13 @@ namespace Aljurythm
                 Logger.WriteLine(new string('─', Title.Length + 1), ConsoleColor.Magenta);
             }
 
-            foreach (var item in MainItems)
-            {
-                Logger.WriteLine(item.ToString());
-            }
+            foreach (var item in MainItems) Logger.WriteLine(item.ToString());
             Logger.LineBreak();
 
             if (ExtraItems.Count == 0) return;
 
             ExtraItems.RemoveAll(i => i.Condition == false);
-            foreach (var item in ExtraItems)
-            {
-                Logger.WriteLine(item.ToString(), ConsoleColor.Blue);
-            }
+            foreach (var item in ExtraItems) Logger.WriteLine(item.ToString(), ConsoleColor.Blue);
             Logger.LineBreak();
         }
 
