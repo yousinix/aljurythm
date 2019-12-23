@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Aljurythm;
 
 namespace Demo
 {
-    internal class Program
+    internal static class Program
     {
         private static void Main(string[] args)
         {
+            var times = new List<long>();
+
             var jury = new Jury
             {
                 Name = "Arithmetic Algorithm",
@@ -52,11 +55,16 @@ namespace Demo
                     // Save Actual Outputs
                     testCase.Actual["sum"] = sum;
                     testCase.Actual["mul"] = mul;
-                }
+                },
+                // Called after each test finishes evaluation
+                PostEvaluate = (testCase, testResult) => times.Add(testResult.ElapsedTime)
             };
 
             jury.ShowMenu();
             jury.Start();
+
+            Console.WriteLine("\n\n[ Calculated using \"PostEvaluate\" Callback ]");
+            Console.WriteLine($"> Levels total Time is: {times.Aggregate(0.0, (acc, x) => acc + x)} ms\n");
         }
 
         private static void Algorithm(int x, int y, out int sum, out int mul)

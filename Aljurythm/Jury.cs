@@ -20,6 +20,7 @@ namespace Aljurythm
 
         public Action<TestCase, StreamReader> Parse { get; set; }
         public Action<TestCase> Algorithm { get; set; }
+        public Action<TestCase, TestResult> PostEvaluate { get; set; }
 
         public string Name
         {
@@ -134,6 +135,8 @@ namespace Aljurythm
                             if (level.DisplayLog) Logger.WriteLine($"COMPLETED [{result.ElapsedTime} ms]", ConsoleColor.Green);
                             if (level.DisplayInputs) Logger.WriteLine($"{testCase.InputsLog()}\n", ConsoleColor.Cyan);
                         }
+
+                        PostEvaluate?.Invoke(testCase, result);
                     }
                 }
 
